@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Форма спостереження за проведеним корекційно-розвитковим заняттям</title>
+<style>
+:root {
+  color-scheme: light;
+  --ink: #2c2825;
+  --line: #b8b09d;
+  --acc: #8c6d1f;
+  --acc-hover: #735917;
+  --soft: #fbf5e3;
+  --soft-head: #f5ebc6;
+  --bg-main: #f5f2eb;
+  --card-bg: #fffdf8;
+  --input-bg: #fdfbf5;
+  --base-font-size: 15px;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg-main);
+  color: var(--ink);
+  font: var(--base-font-size)/1.4 "Times New Roman", Georgia, serif;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+.bar {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 10px 16px;
+  background: var(--card-bg);
+  border-bottom: 1px solid var(--line);
+  font-family: system-ui, -apple-system, sans-serif;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+.bar .pr { font-size: 13px; color: #5a5245; font-weight: 500; }
+.btn-group { display: flex; gap: 8px; align-items: center; }
+button {
+  font: 600 14px system-ui, -apple-system, sans-serif;
+  padding: 9px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--acc);
+  background: var(--acc);
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+button:hover { background: var(--acc-hover); }
+button.g { background: #fff; color: var(--acc); }
+button.g:hover { background: var(--soft); }
+button.font-btn { padding: 7px 12px; font-weight: bold; }
+
+.page {
+  max-width: 950px;
+  margin: 18px auto;
+  background: var(--card-bg);
+  padding: 28px 32px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  border: 1px solid #eae5d8;
+  border-radius: 4px;
+}
+h1 { font-size: 1.15em; text-align: center; margin: 0 0 6px; font-weight: bold; }
+.school { text-align: center; font-weight: bold; font-size: 1.06em; margin: 0 0 16px; color: #000; }
+
+h2 { font-size: 1em; margin: 22px 0 6px; break-after: avoid; font-weight: bold; color: #231f1d; background: var(--soft-head); padding: 6px 10px; border-radius: 4px; }
+.row { margin: 10px 0; display: flex; gap: 8px; align-items: flex-start; flex-wrap: wrap; }
+.row label { font-weight: bold; min-width: 280px; padding-top: 4px; }
+
+input[type="date"], textarea.auto-input {
+  font: inherit;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: var(--input-bg);
+  padding: 4px 6px;
+  min-width: 250px;
+  flex: 1;
+  border-radius: 2px;
+}
+input[type="date"]:focus, textarea.auto-input:focus {
+  outline: none;
+  border-bottom-color: var(--acc);
+  background: #fff;
+}
+textarea.auto-input {
+  resize: none;
+  overflow: hidden;
+}
+
+.chips { display: flex; flex-wrap: wrap; gap: 6px 12px; flex: 1; }
+.chips label { display: flex; align-items: center; gap: 4px; cursor: pointer; font-weight: normal; min-width: auto; padding-top: 0; }
+
+table { width: 100%; border-collapse: collapse; margin-bottom: 8px; background: #fff; }
+th, td { border: 1px solid var(--line); padding: 6px 8px; vertical-align: middle; font-weight: normal; }
+th { font-weight: bold; font-size: 0.88em; background: var(--soft-head); text-align: center; color: #2c261e; }
+td.n { width: 45px; text-align: center; font-weight: bold; }
+td.c { width: 95px; text-align: center; }
+tr { break-inside: avoid; }
+tr.on td:nth-child(2), tr.on td:nth-child(3) { background: #fbf9f0; }
+
+input[type=radio], input[type=checkbox] {
+  appearance: none;
+  -webkit-appearance: none;
+  margin: 0;
+  width: 22px;
+  height: 22px;
+  border: 1.5px solid var(--line);
+  border-radius: 4px;
+  background: #fff;
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  vertical-align: middle;
+}
+input[type=radio]:checked, input[type=checkbox]:checked {
+  border-color: var(--acc);
+  background: var(--soft-head);
+}
+input[type=radio]:checked::after {
+  content: "✓";
+  position: absolute;
+  inset: 0;
+  text-align: center;
+  line-height: 20px;
+  font: 700 16px system-ui, -apple-system, sans-serif;
+  color: var(--acc);
+}
+
+.sum-container { break-before: page; page-break-before: always; margin-top: 30px; }
+.sum td:not(:first-child), .sum th:not(:first-child) { text-align: center; width: 110px; }
+.sum tr.t td { font-weight: bold; background: var(--soft-head); }
+.bg { height: 8px; background: #eae2cc; border-radius: 4px; overflow: hidden; margin-top: 3px; }
+.bg i { display: block; height: 100%; background: var(--acc); }
+
+.signatures-block {
+  margin-top: 40px;
+  break-inside: avoid;
+}
+.sig-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 24px;
+  font-size: 1.05em;
+}
+.sig-label { font-weight: bold; white-space: nowrap; }
+.sig-line { flex: 1; border-bottom: 1px solid var(--ink); margin: 0 15px; height: 1.2em; }
+.sig-name { font-weight: bold; white-space: nowrap; min-width: 180px; border-bottom: 1px dashed var(--line); padding: 0 4px; }
+
+@media print {
+  @page { size: A4; margin: 12mm; }
+  body { background: #fff; font-size: 12px; color: #000; }
+  .bar { display: none; }
+  .page { margin: 0; max-width: none; padding: 0; box-shadow: none; border: 0; background: #fff; }
+  input[type="date"], textarea.auto-input { background: none; border-bottom: 1px solid #888; }
+  .sum-container { break-before: page; page-break-before: always; }
+  .sig-name { border-bottom: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="bar">
+ <span class="pr" id="prog">Заповнено: 0 з 32</span>
+ <div class="btn-group">
+   <button class="g font-btn" id="fontDec" title="Зменшити шрифт">A-</button>
+   <button class="g font-btn" id="fontInc" title="Збільшити шрифт">A+</button>
+   <button class="g" id="clr">Очистити</button>
+   <button id="pdf">Зберегти у PDF</button>
+ </div>
+</div>
+
+<main class="page">
+ <h1>ФОРМА СПОСТЕРЕЖЕННЯ ЗА ПРОВЕДЕНИМ КОРЕКЦІЙНО-РОЗВИТКОВОГО ЗАНЯТТЯ</h1>
+ <div class="school">Вигодська спеціальна школа Івано-Франківської обласної ради</div>
+
+ <div class="row"><label>Дата заняття:</label> <input type="date" id="date"></div>
+ <div class="row"><label>Педагог, який проводить заняття:</label> <textarea class="auto-input" id="pedagog" rows="1"></textarea></div>
+ <div class="row" style="align-items:center"><label>Клас / група:</label><div class="chips" id="cls"></div></div>
+ <div class="row"><label>Тема заняття:</label> <textarea class="auto-input" id="topic" rows="1"></textarea></div>
+ <div class="row"><label>Тривалість заняття, хв:</label> <textarea class="auto-input" id="duration" rows="1"></textarea></div>
+ <div class="row"><label>Індивідуальне / групове:</label> <textarea class="auto-input" id="form_type" rows="1"></textarea></div>
+ <div class="row"><label>Кількість дітей у групі (класі) / з них присутні:</label> <textarea class="auto-input" id="kids_total" rows="1"></textarea></div>
+ <div class="row"><label>Експерт:</label> <textarea class="auto-input" id="expert" rows="1"></textarea></div>
+
+ <div id="form"></div>
+
+ <div class="sum-container">
+  <h2>Зведені результати</h2>
+  <table class="sum" id="sum"></table>
+
+  <div style="margin-top: 25px;">
+    <h3 style="font-size:1em; font-weight:bold; margin-bottom: 6px;">Коментарі експерта (сильні сторони, ризики, рекомендації):</h3>
+    <textarea class="auto-input" rows="4" style="width:100%; border:1px solid var(--line); background:var(--input-bg); padding:8px;"></textarea>
+  </div>
+
+  <div class="signatures-block">
+    <div class="sig-row">
+      <span class="sig-label">Експерт:</span>
+      <div class="sig-line"></div>
+      <span class="sig-name" id="sig_expert_display">________________</span>
+    </div>
+    <div class="sig-row">
+      <span class="sig-label">Ознайомле(на/ний):</span>
+      <div class="sig-line"></div>
+      <span class="sig-name" id="sig_pedagog_display">________________</span>
+    </div>
+  </div>
+ </div>
+</main>
+
+<script>
+const Y = "Так", N = "Не спостерігалося";
+const S = [
+  ["Організаційний етап", [
+    "налагодження емоційного контакту з дитиною",
+    "створення доброзичливої атмосфери",
+    "активізація уваги через прості вправи, коротку гру або руханку",
+    "педагог зосереджує увагу на формуванні у дитини / дітей фізичної, комунікативної та аналізаторної готовності до роботи з темою"
+  ]],
+  ["Формуючий етап", [
+    "вчитель ознайомлює дитину / дітей із темою заняття та його орієнтовною метою, використовуючи зрозумілі дитині слова",
+    "налаштовує їх на роботу та показує, як набуті навички можна застосовувати в повсякденному житті",
+    "зміст цього етапу чітко відповідає програмі та календарно-тематичному плану",
+    "використання наочності, ігрових вправ",
+    "пропонує завдання на рівні актуального розвитку дитини (переважно репродуктивного характеру, які допомагають закріпити навички, сформувати в дитини впевненість у собі)",
+    "завдання, що можуть бути в зоні найближчого розвитку, а саме пізнавально-пошукового, проблемного, творчого характеру, які стимулюють дитину оволодівати новими навичками, формують у неї вміння докладати зусилля і долати труднощі",
+    "вид і кількість завдань, ступінь їх складності залежить від мети заняття (від простого до складного, поступово ускладнюються)"
+  ]],
+  ["Заключний етап", [
+    "постійна допомога вчителя: спочатку працює разом з дитиною, надає їй розгорнуті зразки й інструкції до виконання, поступово зменшуючи допомогу задля розвитку самостійності",
+    "стимулює пізнавальну активність дітей, пропонує їм пояснювати способи своєї роботи, обґрунтовувати їх, наводити приклади ситуацій, як вони можуть використати вивчене на занятті",
+    "при формуванні нових вмінь вчитель опирається на життєвий досвід дитини / дітей",
+    "організовує роботу в парах, колективні форми взаємодії (якщо заняття підгрупове чи групове)",
+    "зміст завдань пов’язаний з матеріалом, який діти вивчають на уроках, з їхніми інтересами, повсякденним життям",
+    "виконання простих вправ для перевірки розуміння матеріалу",
+    "педагог разом з дитиною/дітьми підводить підсумки заняття, пропонує висловити свої враження, думки",
+    "позитивне підкріплення успіхів дитини / дітей",
+    "спрямовує зусилля на приведення організму дитини у спокійний стан та налагодження на відпочинок"
+  ]],
+  ["Ефективність проведення корекційно-розвиткового заняття", [
+    "Урахування психофізичних особливостей, пізнавальних можливостей і попереднього досвіду дитини / дітей",
+    "Використання індивідуального та диференційованого підходів у процесі заняття",
+    "Застосування завдань різного характеру і рівня складності в межах одного заняття, що дозволяє адаптуватися до актуального розвитку дитини / дітей та розширити зону найближчого розвитку",
+    "Інтеграція предметно-практичної діяльності на всіх етапах заняття",
+    "Використання різноманітних наочних матеріалів для конкретизації уявлень дитини / дітей та розвитку її / їх мислення і уяви",
+    "Активна вербальна участь дитини / дітей у всіх видах діяльності та стимулювання її / їх мовленнєвого розвитку",
+    "Застосування технічних засобів корекції (або спеціальних технічних засобів корекції) з урахуванням індивідуальних потреб дитини / дітей",
+    "Застосування спеціальних корекційно-розвиткових методик та технологій, адаптованих до індивідуальних потреб та можливостей дитини / дітей",
+    "Використання невербальних засобів комунікації та альтернативної комунікації (піктограми, жести, картинки тощо)",
+    "Акцент на практичну спрямованість та соціально-побутову адаптацію (формування навичок самообслуговування, орієнтування в побуті тощо)",
+    "Тривалість, структура та організація заняття відповідають нормам (35–40 хв групове / 20–25 хв індивідуальне; чіткий початок, основна частина, рефлексія)",
+    "Протягом заняття проведено 2 фізкультхвилинки тривалістю по 2 - 3 хвилини або 1 фізкультхвилинку у середині уроку тривалістю 5 хвилин (5 - 6 вправ для профілактики порушень постави, зору, дихальна гімнастика)"
+  ]]
+];
+
+const $ = s => document.querySelector(s);
+const esc = t => t.replace(/&/g, "&amp;").replace(/</g, "&lt;");
+
+let currentFontSize = 15;
+$("#fontInc").onclick = () => {
+  if (currentFontSize < 24) {
+    currentFontSize += 1.5;
+    document.documentElement.style.setProperty('--base-font-size', currentFontSize + 'px');
+  }
+};
+$("#fontDec").onclick = () => {
+  if (currentFontSize > 11) {
+    currentFontSize -= 1.5;
+    document.documentElement.style.setProperty('--base-font-size', currentFontSize + 'px');
+  }
+};
+
+function initAutoResize(el) {
+  el.addEventListener('input', () => {
+    el.style.height = 'auto';
+    el.style.height = el.scrollHeight + 'px';
+  });
+}
+
+for(let i = 1; i <= 11; i++) {
+  $("#cls").insertAdjacentHTML("beforeend", `<label><input type="radio" name="cls" value="${i}">${i}</label>`);
+}
+
+let h = "", secs = [], globalIdx = 0;
+S.forEach((s, si) => {
+  const [t, items] = s;
+  secs.push({si, t, n: items.length});
+  h += `<h2>${esc(t)}</h2><table data-s="${si}"><tr><th class="n">№</th><th>Показник / індикатор</th><th class="c">${Y}</th><th class="c">Не спостерігалося</th></tr>`;
+  items.forEach((x, i) => {
+    globalIdx++;
+    h += `<tr><td class="n">${globalIdx}</td><td>${esc(x)}</td><td class="c"><input type="radio" name="r_${si}_${i}" value="y"></td><td class="c"><input type="radio" name="r_${si}_${i}" value="n"></td></tr>`;
+  });
+  h += "</table>";
+});
+$("#form").innerHTML = h;
+
+document.querySelectorAll('textarea.auto-input').forEach(initAutoResize);
+
+function setupSigSync() {
+  const expertInput = $("#expert");
+  const pedagogInput = $("#pedagog");
+  const syncNames = () => {
+    const expVal = expertInput.value.trim();
+    const pedVal = pedagogInput.value.trim();
+    $("#sig_expert_display").textContent = expVal ? expVal : "________________";
+    $("#sig_pedagog_display").textContent = pedVal ? pedVal : "________________";
+  };
+  expertInput.addEventListener("input", syncNames);
+  pedagogInput.addEventListener("input", syncNames);
+}
+setupSigSync();
+
+const last = {};
+function upd() {
+  const rows = [["Розділ", "Так", "Не спостерігалося", "Не заповнено", "% «так»"]];
+  let TY = 0, TN = 0, TT = 0;
+  
+  document.querySelectorAll("#form tr").forEach(r => {
+    const c = r.querySelector("input:checked");
+    r.classList.toggle("on", !!c);
+  });
+  
+  secs.forEach(s => {
+    let y = 0, n = 0;
+    document.querySelectorAll(`table[data-s="${s.si}"] input:checked`).forEach(i => i.value === "y" ? y++ : n++);
+    TY += y; TN += n; TT += s.n;
+    rows.push([s.t, y, n, s.n - y - n, s.n ? Math.round(y / s.n * 100) : 0]);
+  });
+  
+  let o = "";
+  rows.forEach((r, i) => {
+    o += i 
+      ? `<tr><td>${esc(String(r[0]))}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td><td>${r[4]}%<div class="bg"><i style="width:${r[4]}%"></i></div></td></tr>` 
+      : `<tr>${r.map(x => `<th>${x}</th>`).join("")}</tr>`;
+  });
+  
+  const p = TT ? Math.round(TY / TT * 100) : 0;
+  o += `<tr class="t"><td>Усього показників: ${TT}</td><td>${TY}</td><td>${TN}</td><td>${TT - TY - TN}</td><td>${p}%</td></tr>`;
+  
+  $("#sum").innerHTML = o;
+  $("#prog").textContent = `Заповнено: ${TY + TN} з ${TT}`;
+}
+
+document.addEventListener("click", e => {
+  const r = e.target;
+  if(r.type !== "radio" || (r.name === "cls" && 0)) return;
+  if(last[r.name] === r.value) {
+    r.checked = false;
+    last[r.name] = null;
+  } else {
+    last[r.name] = r.value;
+  }
+  upd();
+});
+
+$("#clr").onclick = () => {
+  if(confirm("Очистити всю форму?")) {
+    document.querySelectorAll("input[type=text], input[type=date], textarea").forEach(i => {
+      i.value = "";
+      i.style.height = 'auto';
+    });
+    document.querySelectorAll("input:checked").forEach(i => i.checked = false);
+    for(const k in last) delete last[k];
+    $("#sig_expert_display").textContent = "________________";
+    $("#sig_pedagog_display").textContent = "________________";
+    upd();
+  }
+};
+
+const T = document.title;
+$("#pdf").onclick = () => {
+  const d = $("#date").value, p = $("#pedagog").value.trim();
+  document.title = ["Корекційне_заняття", d, p].filter(Boolean).join("_").replace(/\s+/g, "_");
+  print();
+};
+
+addEventListener("afterprint", () => document.title = T);
+upd();
+</script>
+</body>
+</html>
